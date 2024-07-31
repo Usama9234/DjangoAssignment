@@ -1,0 +1,42 @@
+{% extends "base.html" %} 
+{% block content %}
+    <div class="container">
+        <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+    </div>
+    <script>
+        var textByMe="{{textByMe}}"
+        var textToMe="{{textToMe}}"
+        var zeroToTen="{{zeroToTen}}"
+        var elevenToTwenty="{{elevenToTwenty}}"
+        var twentyOneToThirty="{{twentyOneToThirty}}"
+        var thirtyOneToForty="{{thirtyOneToForty}}"
+
+        var xValues = ["TextByMe","TextToMe", "AgeBracket(0-10)", "AgeBracket(11-20)", "AgeBracket(21-30)", "AgeBracket(31-40)"];
+        var yValues = [];
+        var barColors = ["red", "green","blue","orange","brown","purple"];
+        yValues[0]=textByMe
+        yValues[1]=textToMe
+        yValues[2]=zeroToTen
+        yValues[3]=elevenToTwenty
+        yValues[4]=twentyOneToThirty
+        yValues[5]=thirtyOneToForty
+
+        new Chart("myChart", {
+          type: "bar",
+          data: {
+            labels: xValues,
+            datasets: [{
+              backgroundColor: barColors,
+              data: yValues
+            }]
+          },
+          options: {
+            legend: {display: false},
+            title: {
+              display: true,
+              text: "Messages Chart"
+            }
+          }
+        });
+        </script>
+{% endblock %}

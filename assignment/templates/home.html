@@ -1,0 +1,13 @@
+{% extends "base.html" %} 
+{% block title %}Home{% endblock %} 
+{% block content %}
+<h3>Register</h3>
+<div class="container">
+    <form action="{% url 'saveUser' %}" method="post">
+        {% csrf_token %}
+        {{form.as_p}}
+      <button type="submit" value="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+{% endblock %}

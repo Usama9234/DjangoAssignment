@@ -1,0 +1,53 @@
+{% extends "base.html" %} 
+{% block title %}Messaging{% endblock %} 
+{% block content %}
+<h3>Message Form</h3>
+<div class="container">
+   
+  <!-- Form to submit the message -->
+  <form action="{% url 'saveMessage' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <select name="receiverName" id="id_receiverName" required>
+        <option value="">Select a receiver</option>
+        <!-- Options will be populated based on ageBracket -->
+      </select>
+    <button type="submit">Send Message</button>
+  </form>
+
+  <!-- JavaScript to handle field change and update receivers dropdown -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const ageBracketField = document.getElementById('id_ageBracket');
+      const receiversField = document.getElementById('id_receiverName');
+
+      if (ageBracketField) {
+        ageBracketField.addEventListener('change', function() {
+          const selectedValue = this.value;
+          if (selectedValue) {
+            // Perform AJAX request to get the receivers
+            fetch(`/get-receivers/?ageBracket=${selectedValue}`)
+              .then(response => response.json())
+              .then(data => {
+                // Clear existing options
+                receiversField.innerHTML = '<option value="">Select a receiver</option>';
+
+                // Add new options based on the response
+                data.receivers.forEach(receiver => {
+                  const option = document.createElement('option');
+                  option.value = receiver.username;
+                  option.textContent = receiver.username;
+                  receiversField.appendChild(option);
+                });
+              })
+              .catch(error => console.error('Error fetching receivers:', error));
+          } else {
+            // Clear existing options if no age bracket is selected
+            receiversField.innerHTML = '<option value="">Select a receiver</option>';
+          }
+        });
+      }
+    });
+  </script>
+</div>
+{% endblock %}
